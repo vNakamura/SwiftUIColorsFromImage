@@ -11,6 +11,7 @@
 		2431430228AEDDDD000097DF /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2431430128AEDDDD000097DF /* ContentView.swift */; };
 		2431430428AEDDDF000097DF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2431430328AEDDDF000097DF /* Assets.xcassets */; };
 		2431430728AEDDDF000097DF /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2431430628AEDDDF000097DF /* Preview Assets.xcassets */; };
+		2431430E28AEDDF9000097DF /* Picsum.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2431430D28AEDDF9000097DF /* Picsum.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -19,6 +20,7 @@
 		2431430128AEDDDD000097DF /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		2431430328AEDDDF000097DF /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		2431430628AEDDDF000097DF /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		2431430D28AEDDF9000097DF /* Picsum.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Picsum.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -53,6 +55,7 @@
 			children = (
 				243142FF28AEDDDD000097DF /* SwiftUIColorsFromImageApp.swift */,
 				2431430128AEDDDD000097DF /* ContentView.swift */,
+				2431430D28AEDDF9000097DF /* Picsum.swift */,
 				2431430328AEDDDF000097DF /* Assets.xcassets */,
 				2431430528AEDDDF000097DF /* Preview Content */,
 			);
@@ -137,6 +140,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2431430E28AEDDF9000097DF /* Picsum.swift in Sources */,
 				2431430228AEDDDD000097DF /* ContentView.swift in Sources */,
 				2431430028AEDDDD000097DF /* SwiftUIColorsFromImageApp.swift in Sources */,
 			);
