@@ -8,7 +8,10 @@
 import SwiftUI
 
 struct ContentView: View {
+    @Namespace var namespace
     @StateObject var thumbnails = PicsumList()
+    @State var selected: SelectedPicture?
+    @State var showingDetails = false
 
     var body: some View {
         ScrollView {
@@ -43,6 +46,16 @@ struct ContentView: View {
         }
         .task(thumbnails.loadPage)
         .refreshable(action: thumbnails.loadPage)
+        .overlay {
+            if showingDetails, let selected {
+                PhotoDetails(
+                    isPresented: $showingDetails,
+                    selection: selected,
+                    namespace: namespace
+                )
+                .transition(.opacity)
+            }
+        }
     }
 
     var grid: some View {
@@ -53,9 +66,15 @@ struct ContentView: View {
             ForEach(thumbnails.photos) { photo in
                 AsyncImage(url: URLs.squareImageByID(photo.id, size: 500)) { image in
                     VStack {
-                        image
-                            .resizable()
-                            .scaledToFit()
+                        Color.black
+                            .aspectRatio(1, contentMode: .fit)
+                            .opacity(0.2)
+                            .overlay {
+                                image
+                                    .resizable()
+                                    .matchedGeometryEffect(id: photo.id, in: namespace)
+                                    .scaledToFit()
+                            }
                             .padding(.horizontal, 20)
                             .padding(.top, 20)
                         Text(photo.author)
@@ -63,6 +82,10 @@ struct ContentView: View {
                             .lineLimit(1)
                             .padding(.horizontal, 10)
                             .padding(.bottom, 10)
+                    }
+                    .onTapGesture {
+                        selected = (photo, image)
+                        withAnimation { showingDetails.toggle() }
                     }
                 } placeholder: {
                     VStack {
