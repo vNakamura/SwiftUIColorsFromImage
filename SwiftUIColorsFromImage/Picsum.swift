@@ -110,6 +110,7 @@ class PicsumList: ObservableObject {
 @MainActor
 private class ImageLoader: ObservableObject {
     @Published var image: Image?
+    @Published var theme: ColorTheme?
     @Published var status = Status.idle
     
     func loadImage(_ id: String, size: Int) async {
@@ -117,9 +118,11 @@ private class ImageLoader: ObservableObject {
         
         do {
             let uiImage = try await PicsumService.fetchImage(id, size: size)
+            let colors = try ColorTheme.generate(from: uiImage)
             
             withAnimation {
                 image = Image(uiImage: uiImage)
+                theme = colors
                 status = .complete
             }
         } catch {
@@ -132,7 +135,7 @@ struct PicsumAsyncImage<Content: View, Placeholder: View>: View {
     @StateObject private var loader = ImageLoader()
     
     var id: String
-    var content: (Image) -> Content
+    var content: (Image, ColorTheme) -> Content
     var placeholder: () -> Placeholder
     
     var body: some View {
@@ -142,7 +145,7 @@ struct PicsumAsyncImage<Content: View, Placeholder: View>: View {
                 placeholder()
                 
             case .complete:
-                content(loader.image!)
+                content(loader.image!, loader.theme!)
                 
             case .error(let message):
                 VStack(alignment: .center) {

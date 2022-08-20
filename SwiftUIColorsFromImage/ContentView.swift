@@ -64,7 +64,7 @@ struct ContentView: View {
             spacing: 0
         ) {
             ForEach(thumbnails.photos) { photo in
-                PicsumAsyncImage(id: photo.id) { image in
+                PicsumAsyncImage(id: photo.id) { image, theme in
                     VStack {
                         Color.black
                             .aspectRatio(1, contentMode: .fit)
@@ -83,6 +83,7 @@ struct ContentView: View {
                             .padding(.horizontal, 10)
                             .padding(.bottom, 10)
                     }
+                    .background { theme.averageColor }
                     .onTapGesture {
                         selected = (photo, image)
                         withAnimation { showingDetails.toggle() }
