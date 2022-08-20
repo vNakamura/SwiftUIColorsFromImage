@@ -68,6 +68,24 @@ enum PicsumService {
         
         return decoded
     }
+    
+    private static let imageCache = NSCache<NSURL, UIImage>()
+    
+    static func fetchImage(_ id: String, size: Int) async throws -> UIImage {
+        guard let url = URLs.squareImageByID(id, size: size)
+        else { throw PicsumError.urlError }
+        
+        if let cached = imageCache.object(forKey: url as NSURL) { return cached }
+        
+        guard let (data, _) = try? await URLSession.shared.data(from: url)
+        else { throw PicsumError.networkError }
+        
+        guard let image = UIImage(data: data)
+        else { throw PicsumError.decodeError }
+        
+        imageCache.setObject(image, forKey: url as NSURL)
+        return image
+    }
 }
 
 @MainActor
@@ -85,6 +103,57 @@ class PicsumList: ObservableObject {
             status = .complete
         } catch {
             status = .error(message: error.localizedDescription)
+        }
+    }
+}
+
+@MainActor
+private class ImageLoader: ObservableObject {
+    @Published var image: Image?
+    @Published var status = Status.idle
+    
+    func loadImage(_ id: String, size: Int) async {
+        status = .loading
+        
+        do {
+            let uiImage = try await PicsumService.fetchImage(id, size: size)
+            
+            withAnimation {
+                image = Image(uiImage: uiImage)
+                status = .complete
+            }
+        } catch {
+            status = .error(message: error.localizedDescription)
+        }
+    }
+}
+
+struct PicsumAsyncImage<Content: View, Placeholder: View>: View {
+    @StateObject private var loader = ImageLoader()
+    
+    var id: String
+    var content: (Image) -> Content
+    var placeholder: () -> Placeholder
+    
+    var body: some View {
+        Group {
+            switch loader.status {
+            case .idle, .loading:
+                placeholder()
+                
+            case .complete:
+                content(loader.image!)
+                
+            case .error(let message):
+                VStack(alignment: .center) {
+                    Image(systemName: "x.square.fill").font(.title)
+                    Text(message).font(.caption)
+                }
+                .foregroundColor(.secondary)
+            }
+        }
+        .task {
+            await loader.loadImage(id, size: 500)
         }
     }
 }

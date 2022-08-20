@@ -64,7 +64,7 @@ struct ContentView: View {
             spacing: 0
         ) {
             ForEach(thumbnails.photos) { photo in
-                AsyncImage(url: URLs.squareImageByID(photo.id, size: 500)) { image in
+                PicsumAsyncImage(id: photo.id) { image in
                     VStack {
                         Color.black
                             .aspectRatio(1, contentMode: .fit)
