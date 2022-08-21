@@ -82,6 +82,7 @@ struct ContentView: View {
                             .lineLimit(1)
                             .padding(.horizontal, 10)
                             .padding(.bottom, 10)
+                            .foregroundColor(theme.contrastingTone)
                     }
                     .background { theme.averageColor }
                     .onTapGesture {

@@ -10,13 +10,26 @@ import SwiftUI
 
 struct ColorTheme {
     let averageColor: Color
+    let contrastingTone: Color
 }
 
 extension ColorTheme {
     static func generate(from image: UIImage) throws -> ColorTheme {
         let baseColor = try getAverage(from: image)
 
-        return ColorTheme(averageColor: Color(uiColor: baseColor))
+        return ColorTheme(
+            averageColor: Color(uiColor: baseColor),
+            contrastingTone: isLight(baseColor) ? .black : .white
+        )
+    }
+    
+    private static func isLight(_ color: UIColor) -> Bool {
+        var white: CGFloat = 0
+        var alpha: CGFloat = 0
+        
+        color.getWhite(&white, alpha: &alpha)
+        
+        return white >= 0.5
     }
 
     private static func getAverage(from image: UIImage) throws -> UIColor {
