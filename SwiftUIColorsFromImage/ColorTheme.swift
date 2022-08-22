@@ -17,18 +17,44 @@ extension ColorTheme {
     static func generate(from image: UIImage) throws -> ColorTheme {
         let baseColor = try getAverage(from: image)
 
+        var hue: CGFloat = 0
+        var saturation: CGFloat = 0
+        var brightness: CGFloat = 0
+        var alpha: CGFloat = 0
+
+        baseColor.getHue(
+            &hue,
+            saturation: &saturation,
+            brightness: &brightness,
+            alpha: &alpha
+        )
+
+        let contrastingTone = isLight(baseColor) ?
+            UIColor(
+                hue: hue,
+                saturation: 0.9,
+                brightness: 0.1,
+                alpha: alpha
+            ) :
+            UIColor(
+                hue: hue,
+                saturation: min(saturation, 0.15),
+                brightness: 0.95,
+                alpha: alpha
+            )
+
         return ColorTheme(
             averageColor: Color(uiColor: baseColor),
-            contrastingTone: isLight(baseColor) ? .black : .white
+            contrastingTone: Color(uiColor: contrastingTone)
         )
     }
-    
+
     private static func isLight(_ color: UIColor) -> Bool {
         var white: CGFloat = 0
         var alpha: CGFloat = 0
-        
+
         color.getWhite(&white, alpha: &alpha)
-        
+
         return white >= 0.5
     }
 
