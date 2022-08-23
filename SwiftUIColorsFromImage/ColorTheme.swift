@@ -11,6 +11,10 @@ import SwiftUI
 struct ColorTheme {
     let averageColor: Color
     let contrastingTone: Color
+    let bodyDark: Color
+    let bodyLight: Color
+    let ctaColor: Color
+    let ctaContrast: Color
 }
 
 extension ColorTheme {
@@ -45,7 +49,11 @@ extension ColorTheme {
 
         return ColorTheme(
             averageColor: Color(uiColor: baseColor),
-            contrastingTone: Color(uiColor: contrastingTone)
+            contrastingTone: Color(uiColor: contrastingTone),
+            bodyDark: .black,
+            bodyLight: .white,
+            ctaColor: .blue,
+            ctaContrast: .white
         )
     }
 

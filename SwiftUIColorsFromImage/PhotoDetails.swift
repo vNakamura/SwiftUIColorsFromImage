@@ -8,12 +8,20 @@
 import SwiftUI
 
 struct PhotoDetails: View {
+    @Environment(\.colorScheme) var colorScheme
     @Binding var isPresented: Bool
     var selection: SelectedPicture?
     var namespace: Namespace.ID
     
     var body: some View {
         if let (info, image, theme) = selection {
+            let (backgroundColor, textColor) =
+                colorScheme == .dark ? (
+                    theme.bodyDark, theme.bodyLight
+                ) : (
+                    theme.bodyLight, theme.bodyDark
+                )
+            
             VStack(spacing: 0) {
                 VStack(alignment: .leading, spacing: 0) {
                     HStack {
@@ -64,18 +72,19 @@ struct PhotoDetails: View {
                     Spacer()
                 }
                 .safeAreaInset(edge: .bottom, spacing: 0) {
-                    CTA(info: info)
+                    CTA(info: info, theme: theme)
                 }
             }
             .font(.fancy(size: 24))
-            .foregroundColor(Color.black)
-            .background { Color.white.ignoresSafeArea() }
+            .foregroundColor(textColor)
+            .background { backgroundColor.ignoresSafeArea() }
         }
     }
 }
 
 struct CTA: View {
     var info: PictureInfo
+    var theme: ColorTheme
     
     var body: some View {
         if let url = URL(string: info.url) {
@@ -86,11 +95,11 @@ struct CTA: View {
                     .padding()
                     .frame(maxWidth: .infinity)
                     .background {
-                        Color.black
-                            .border(Color.white.opacity(0.3))
+                        theme.ctaColor
+                            .border(theme.ctaContrast.opacity(0.3))
                     }
             }
-            .foregroundColor(.white)
+            .foregroundColor(theme.ctaContrast)
             .padding(.horizontal, 12)
         }
     }
