@@ -86,7 +86,7 @@ struct ContentView: View {
                     }
                     .background { theme.averageColor }
                     .onTapGesture {
-                        selected = (photo, image)
+                        selected = (photo, image, theme)
                         withAnimation { showingDetails.toggle() }
                     }
                 } placeholder: {

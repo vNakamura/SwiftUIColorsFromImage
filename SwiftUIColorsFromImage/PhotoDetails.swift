@@ -13,7 +13,7 @@ struct PhotoDetails: View {
     var namespace: Namespace.ID
     
     var body: some View {
-        if let (info, image) = selection {
+        if let (info, image, theme) = selection {
             VStack(spacing: 0) {
                 VStack(alignment: .leading, spacing: 0) {
                     HStack {
@@ -24,7 +24,7 @@ struct PhotoDetails: View {
                         }
                         Spacer()
                     }
-                    .foregroundColor(Color.black.opacity(0.3))
+                    .foregroundColor(theme.contrastingTone.opacity(0.3))
                     .font(.system(size: 24))
                     .padding(12)
                     
@@ -32,12 +32,12 @@ struct PhotoDetails: View {
                         .resizable()
                         .matchedGeometryEffect(id: info.id, in: namespace)
                         .scaledToFill()
-                        .shadow(color: Color.black.opacity(0.2), radius: 24)
+                        .shadow(color: theme.contrastingTone.opacity(0.2), radius: 24)
                         .padding(.horizontal, 24)
                         .frame(maxWidth: .infinity)
                 }
                 .background {
-                    Color.gray
+                    theme.averageColor
                         .ignoresSafeArea()
                         .offset(y: -48)
                 }
@@ -112,7 +112,8 @@ struct LongText: View {
 
 typealias SelectedPicture = (
     info: PictureInfo,
-    image: Image
+    image: Image,
+    theme: ColorTheme
 )
 
 struct SpacedLabelStyle: LabelStyle {
@@ -136,7 +137,8 @@ struct PhotoDetails_Previews: PreviewProvider {
             height: 979,
             url: "https://unsplash.com/photos/hGO27G5tZJ8"
         ),
-        image: Image(uiImage: uiImage)
+        image: Image(uiImage: uiImage),
+        theme: try! ColorTheme.generate(from: uiImage)
     )
     
     static var previews: some View {
