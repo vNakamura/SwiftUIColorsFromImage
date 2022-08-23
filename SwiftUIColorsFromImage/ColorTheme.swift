@@ -47,13 +47,56 @@ extension ColorTheme {
                 alpha: alpha
             )
 
+        // MARK: Body Colors
+
+        let bodyDark = UIColor(
+            hue: hue,
+            saturation: min(saturation, 0.8),
+            brightness: min(brightness, 0.2),
+            alpha: alpha
+        )
+
+        let bodyLight = UIColor(
+            hue: hue,
+            saturation: min(saturation, 0.2),
+            brightness: max(brightness, 0.9),
+            alpha: alpha
+        )
+
+        // MARK: CTA Colors
+
+        let ctaColor = UIColor(
+            hue: (hue + 0.05).truncatingRemainder(dividingBy: 1),
+            saturation: min(saturation * 2, 0.8),
+            brightness: min(brightness * 3, 0.9),
+            alpha: alpha
+        )
+
+        var ctaHue: CGFloat = 0
+        var ctaSaturation: CGFloat = 0
+        var ctaBrightness: CGFloat = 0
+        
+        ctaColor.getHue(
+            &ctaHue,
+            saturation: &ctaSaturation,
+            brightness: &ctaBrightness,
+            alpha: &alpha
+        )
+
+        let ctaContrast = UIColor(
+            hue: ctaHue,
+            saturation: min(0.1, ctaSaturation),
+            brightness: isLight(ctaColor) ? 0.05 : 0.95,
+            alpha: alpha
+        )
+
         return ColorTheme(
             averageColor: Color(uiColor: baseColor),
             contrastingTone: Color(uiColor: contrastingTone),
-            bodyDark: .black,
-            bodyLight: .white,
-            ctaColor: .blue,
-            ctaContrast: .white
+            bodyDark: Color(uiColor: bodyDark),
+            bodyLight: Color(uiColor: bodyLight),
+            ctaColor: Color(uiColor: ctaColor),
+            ctaContrast: Color(uiColor: ctaContrast)
         )
     }
 
