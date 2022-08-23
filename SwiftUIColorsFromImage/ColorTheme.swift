@@ -7,6 +7,7 @@
 
 import Foundation
 import SwiftUI
+import Palette
 
 struct ColorTheme {
     let averageColor: Color
@@ -15,12 +16,25 @@ struct ColorTheme {
     let bodyLight: Color
     let ctaColor: Color
     let ctaContrast: Color
+    let allColors: [Color]
 }
 
 extension ColorTheme {
     static func generate(from image: UIImage) throws -> ColorTheme {
         let baseColor = try getAverage(from: image)
-
+        let palette = image.createPalette()
+        
+        return expandTheme(baseColor: baseColor, palette: palette)
+    }
+    
+    static func generate(from image: UIImage) async throws -> ColorTheme {
+        let baseColor = try getAverage(from: image)
+        let palette = await image.createPalette()
+        
+        return expandTheme(baseColor: baseColor, palette: palette)
+    }
+    
+    private static func expandTheme(baseColor: UIColor, palette: Palette) -> ColorTheme {
         var hue: CGFloat = 0
         var saturation: CGFloat = 0
         var brightness: CGFloat = 0
@@ -89,6 +103,19 @@ extension ColorTheme {
             brightness: isLight(ctaColor) ? 0.05 : 0.95,
             alpha: alpha
         )
+        
+        let allColors: [Color] = [
+            baseColor,
+            palette.lightVibrantColor,
+            palette.vibrantColor,
+            palette.darkVibrantColor,
+            palette.lightMutedColor,
+            palette.mutedColor,
+            palette.darkMutedColor
+        ].compactMap {
+            guard let uiColor = $0 else { return nil }
+            return Color(uiColor: uiColor)
+        }
 
         return ColorTheme(
             averageColor: Color(uiColor: baseColor),
@@ -96,7 +123,8 @@ extension ColorTheme {
             bodyDark: Color(uiColor: bodyDark),
             bodyLight: Color(uiColor: bodyLight),
             ctaColor: Color(uiColor: ctaColor),
-            ctaContrast: Color(uiColor: ctaContrast)
+            ctaContrast: Color(uiColor: ctaContrast),
+            allColors: allColors
         )
     }
 

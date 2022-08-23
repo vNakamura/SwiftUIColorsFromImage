@@ -1,0 +1,14 @@
+{
+  "pins" : [
+    {
+      "identity" : "palette",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/vNakamura/Palette",
+      "state" : {
+        "branch" : "master",
+        "revision" : "e4eadcc48e70e4fbaf50315c7597c19cfa285acc"
+      }
+    }
+  ],
+  "version" : 2
+}

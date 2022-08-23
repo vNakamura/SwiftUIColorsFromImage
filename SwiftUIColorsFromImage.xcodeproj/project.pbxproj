@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2427C64B28B571610057877A /* Palette in Frameworks */ = {isa = PBXBuildFile; productRef = 2427C64A28B571610057877A /* Palette */; };
 		2431430028AEDDDD000097DF /* SwiftUIColorsFromImageApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 243142FF28AEDDDD000097DF /* SwiftUIColorsFromImageApp.swift */; };
 		2431430228AEDDDD000097DF /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2431430128AEDDDD000097DF /* ContentView.swift */; };
 		2431430428AEDDDF000097DF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2431430328AEDDDF000097DF /* Assets.xcassets */; };
@@ -32,6 +33,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2427C64B28B571610057877A /* Palette in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -92,6 +94,9 @@
 			dependencies = (
 			);
 			name = SwiftUIColorsFromImage;
+			packageProductDependencies = (
+				2427C64A28B571610057877A /* Palette */,
+			);
 			productName = SwiftUIColorsFromImage;
 			productReference = 243142FC28AEDDDD000097DF /* SwiftUIColorsFromImage.app */;
 			productType = "com.apple.product-type.application";
@@ -120,6 +125,9 @@
 				Base,
 			);
 			mainGroup = 243142F328AEDDDD000097DF;
+			packageReferences = (
+				2427C64928B571610057877A /* XCRemoteSwiftPackageReference "Palette" */,
+			);
 			productRefGroup = 243142FD28AEDDDD000097DF /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -351,6 +359,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		2427C64928B571610057877A /* XCRemoteSwiftPackageReference "Palette" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/vNakamura/Palette";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		2427C64A28B571610057877A /* Palette */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2427C64928B571610057877A /* XCRemoteSwiftPackageReference "Palette" */;
+			productName = Palette;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 243142F428AEDDDD000097DF /* Project object */;
 }

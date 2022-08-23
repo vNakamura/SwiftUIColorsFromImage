@@ -118,7 +118,7 @@ private class ImageLoader: ObservableObject {
         
         do {
             let uiImage = try await PicsumService.fetchImage(id, size: size)
-            let colors = try ColorTheme.generate(from: uiImage)
+            let colors = try await ColorTheme.generate(from: uiImage)
             
             withAnimation {
                 image = Image(uiImage: uiImage)

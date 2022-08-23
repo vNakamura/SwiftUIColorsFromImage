@@ -31,6 +31,7 @@ struct PhotoDetails: View {
                             Image(systemName: "chevron.left.circle.fill")
                         }
                         Spacer()
+                        FullPalette(colors: theme.allColors)
                     }
                     .foregroundColor(theme.contrastingTone.opacity(0.3))
                     .font(.system(size: 24))
@@ -131,6 +132,48 @@ struct SpacedLabelStyle: LabelStyle {
             configuration.icon
             Spacer()
             configuration.title
+        }
+    }
+}
+
+struct FullPalette: View {
+    var colors: [Color]
+    @State private var expanded = true
+    
+    var body: some View {
+        HStack {
+            if expanded {
+                HStack(spacing: 8) {
+                    ForEach(colors, id: \.self) { color in
+                        color
+                            .clipShape(Circle())
+                            .scaledToFit()
+                            .frame(width: 18)
+                    }
+                }
+                .padding(.vertical, 4)
+                .padding(.horizontal, 8)
+                .background {
+                    VStack(spacing: 0) {
+                        Color.white
+                        Color.black
+                    }
+                    .opacity(0.3)
+                }
+                .clipShape(RoundedRectangle(cornerRadius: 50))
+                .transition(
+                    .scale(scale: 0.4, anchor: .trailing)
+                        .combined(with: .opacity)
+                )
+            }
+            
+            Button {
+                withAnimation {
+                    expanded.toggle()
+                }
+            } label: {
+                Image(systemName: "paintpalette.fill")
+            }
         }
     }
 }
