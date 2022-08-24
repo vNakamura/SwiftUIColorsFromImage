@@ -138,7 +138,7 @@ struct SpacedLabelStyle: LabelStyle {
 
 struct FullPalette: View {
     var colors: [Color]
-    @State private var expanded = true
+    @State private var expanded = false
     
     var body: some View {
         HStack {

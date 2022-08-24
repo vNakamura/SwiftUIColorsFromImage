@@ -6,8 +6,8 @@
 //
 
 import Foundation
-import SwiftUI
 import Palette
+import SwiftUI
 
 struct ColorTheme {
     let averageColor: Color
@@ -23,17 +23,17 @@ extension ColorTheme {
     static func generate(from image: UIImage) throws -> ColorTheme {
         let baseColor = try getAverage(from: image)
         let palette = image.createPalette()
-        
+
         return expandTheme(baseColor: baseColor, palette: palette)
     }
-    
+
     static func generate(from image: UIImage) async throws -> ColorTheme {
         let baseColor = try getAverage(from: image)
         let palette = await image.createPalette()
-        
+
         return expandTheme(baseColor: baseColor, palette: palette)
     }
-    
+
     private static func expandTheme(baseColor: UIColor, palette: Palette) -> ColorTheme {
         var hue: CGFloat = 0
         var saturation: CGFloat = 0
@@ -63,33 +63,54 @@ extension ColorTheme {
 
         // MARK: Body Colors
 
+        let bodyBase =
+            palette.darkMutedColor ??
+            palette.mutedColor ??
+            palette.lightMutedColor ??
+            baseColor
+
+        var bodyHue: CGFloat = 0
+        var bodySaturation: CGFloat = 0
+        var bodyBrightness: CGFloat = 0
+
+        bodyBase.getHue(
+            &bodyHue,
+            saturation: &bodySaturation,
+            brightness: &bodyBrightness,
+            alpha: &alpha
+        )
+
         let bodyDark = UIColor(
-            hue: hue,
-            saturation: min(saturation, 0.8),
-            brightness: min(brightness, 0.2),
+            hue: bodyHue,
+            saturation: min(bodySaturation, 0.5),
+            brightness: min(bodyBrightness, 0.3),
             alpha: alpha
         )
 
         let bodyLight = UIColor(
-            hue: hue,
-            saturation: min(saturation, 0.2),
-            brightness: max(brightness, 0.9),
+            hue: bodyHue,
+            saturation: min(bodySaturation, 0.025),
+            brightness: max(bodyBrightness, 0.9),
             alpha: alpha
         )
 
         // MARK: CTA Colors
 
-        let ctaColor = UIColor(
-            hue: (hue + 0.05).truncatingRemainder(dividingBy: 1),
-            saturation: min(saturation * 2, 0.8),
-            brightness: min(brightness * 3, 0.9),
-            alpha: alpha
-        )
+        let ctaColor =
+            palette.vibrantColor ??
+            palette.lightVibrantColor ??
+            palette.darkVibrantColor ??
+            UIColor(
+                hue: (hue + 0.05).truncatingRemainder(dividingBy: 1),
+                saturation: min(saturation * 2, 0.8),
+                brightness: min(brightness * 3, 0.9),
+                alpha: alpha
+            )
 
         var ctaHue: CGFloat = 0
         var ctaSaturation: CGFloat = 0
         var ctaBrightness: CGFloat = 0
-        
+
         ctaColor.getHue(
             &ctaHue,
             saturation: &ctaSaturation,
@@ -103,7 +124,7 @@ extension ColorTheme {
             brightness: isLight(ctaColor) ? 0.05 : 0.95,
             alpha: alpha
         )
-        
+
         let allColors: [Color] = [
             baseColor,
             palette.lightVibrantColor,
